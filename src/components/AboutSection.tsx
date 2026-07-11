@@ -41,7 +41,7 @@ export default function AboutSection() {
             {/* Main Portrait Frame */}
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-brand-border/60 bg-brand-surface-low shadow-xl">
               <img
-                src="assets/Rosalia_arts/Compressed/Profile_1.webp"
+                src={`${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Profile_1.webp`}
                 alt="Rosalia Arts - Profile Portrait"
                 className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
