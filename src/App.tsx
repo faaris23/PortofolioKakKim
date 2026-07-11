@@ -138,13 +138,12 @@ export default function App() {
                       onClick={() => setSelectedArtwork(ARTWORKS[0])}
                     >
                       {/* Masterpiece visual */}
-                      <img
-                        src="./assets/Rosalia_arts/kuro no tenshi ossa.jpg"
-                        alt="Masterpiece - Crows' Descent"
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
-                        referrerPolicy="no-referrer"
-                      />
-
+                        <img
+                          src={`${import.meta.env.BASE_URL}assets/Rosalia_arts/kuro no tenshi ossa.jpg`}
+                          alt="Masterpiece - Crows' Descent"
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
+                          referrerPolicy="no-referrer"
+                        />
                       {/* Absolute Bottom banner overlay representing the gold theme */}
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/50 to-transparent p-6 pt-16 flex flex-col justify-end text-white text-left">
                         <span className="font-sans text-[9px] tracking-[0.2em] text-brand-gold font-black uppercase">
