@@ -139,7 +139,7 @@ export default function App() {
                     >
                       {/* Masterpiece visual */}
                         <img
-                          src={`${import.meta.env.BASE_URL}assets/Rosalia_arts/kuro no tenshi ossa.jpg`}
+                          src={`${import.meta.env.BASE_URL}Public/Rosalia_arts/kuro-no-tenshi-ossa.jpg`}
                           alt="Masterpiece - Crows' Descent"
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-103"
                           referrerPolicy="no-referrer"
