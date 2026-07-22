@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, ShieldCheck, Clock, CheckCircle2, History, Trash2, Send, ExternalLink, HelpCircle } from 'lucide-react';
+import { Mail, ShieldCheck, Clock, CheckCircle2, History, Trash2, Send, ExternalLink, HelpCircle, AlertCircle, Loader } from 'lucide-react';
 
 interface SavedInquiry {
   id: string;
@@ -8,7 +8,8 @@ interface SavedInquiry {
   projectType: string;
   budget: string;
   description: string;
-  date: string;
+  submittedAt: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
 }
 
 export default function InquiryForm() {
@@ -24,55 +25,160 @@ export default function InquiryForm() {
   const [submittedName, setSubmittedName] = useState('');
   const [submittedType, setSubmittedType] = useState('');
   const [pastInquiries, setPastInquiries] = useState<SavedInquiry[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
 
-  // Load past inquiries from localStorage on mount
+  // API configuration
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  // Load past inquiries from backend on mount
   useEffect(() => {
-    const saved = localStorage.getItem('aurelia_inquiries');
-    if (saved) {
-      try {
-        setPastInquiries(JSON.parse(saved));
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    loadPastInquiries();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const loadPastInquiries = async () => {
+    try {
+      setIsLoadingHistory(true);
+      // Try to load from backend first
+      const response = await fetch(`${API_URL}/api/inquiries`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data) {
+          setPastInquiries(data.data);
+        }
+      } else {
+        // Fallback to localStorage
+        const saved = localStorage.getItem('aurelia_inquiries');
+        if (saved) {
+          try {
+            const inquiries = JSON.parse(saved).map((inq: any) => ({
+              ...inq,
+              submittedAt: inq.date || new Date().toISOString(),
+              status: 'pending',
+            }));
+            setPastInquiries(inquiries);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Backend not available, checking localStorage');
+      const saved = localStorage.getItem('aurelia_inquiries');
+      if (saved) {
+        try {
+          const inquiries = JSON.parse(saved).map((inq: any) => ({
+            ...inq,
+            submittedAt: inq.date || new Date().toISOString(),
+            status: 'pending',
+          }));
+          setPastInquiries(inquiries);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.description) return;
 
-    const newInquiry: SavedInquiry = {
-      id: `inq-${Date.now()}`,
-      name: formData.name,
-      email: formData.email,
-      projectType: formData.projectType,
-      budget: formData.budget,
-      description: formData.description,
-      date: new Date().toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    };
+    setIsLoading(true);
+    setError('');
 
-    const updated = [newInquiry, ...pastInquiries];
-    setPastInquiries(updated);
-    localStorage.setItem('aurelia_inquiries', JSON.stringify(updated));
+    try {
+      // Try to submit to backend
+      const response = await fetch(`${API_URL}/api/inquiries`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setSubmittedName(formData.name);
-    setSubmittedType(formData.projectType);
-    setSubmitted(true);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit inquiry');
+      }
 
-    // Reset Form
-    setFormData({
-      name: '',
-      email: '',
-      projectType: 'Web Novel Cover Art',
-      budget: '$250 - $500',
-      description: '',
-    });
+      const result = await response.json();
+
+      // Create inquiry object for UI
+      const newInquiry: SavedInquiry = {
+        id: result.inquiryId,
+        name: formData.name,
+        email: formData.email,
+        projectType: formData.projectType,
+        budget: formData.budget,
+        description: formData.description,
+        submittedAt: new Date().toISOString(),
+        status: 'pending',
+      };
+
+      // Update local state
+      const updated = [newInquiry, ...pastInquiries];
+      setPastInquiries(updated);
+
+      // Also save to localStorage as backup
+      const localStorageData = updated.map(inq => ({
+        ...inq,
+        date: inq.submittedAt,
+      }));
+      localStorage.setItem('aurelia_inquiries', JSON.stringify(localStorageData));
+
+      setSubmittedName(formData.name);
+      setSubmittedType(formData.projectType);
+      setSubmitted(true);
+
+      // Reset Form
+      setFormData({
+        name: '',
+        email: '',
+        projectType: 'Web Novel Cover Art',
+        budget: '$250 - $500',
+        description: '',
+      });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to submit inquiry';
+      setError(errorMessage);
+      console.error('Submission error:', err);
+
+      // Fallback to localStorage
+      const newInquiry: SavedInquiry = {
+        id: `inq-${Date.now()}`,
+        name: formData.name,
+        email: formData.email,
+        projectType: formData.projectType,
+        budget: formData.budget,
+        description: formData.description,
+        submittedAt: new Date().toISOString(),
+        status: 'pending',
+      };
+
+      const updated = [newInquiry, ...pastInquiries];
+      setPastInquiries(updated);
+      localStorage.setItem('aurelia_inquiries', JSON.stringify(
+        updated.map(inq => ({ ...inq, date: inq.submittedAt }))
+      ));
+
+      setSubmittedName(formData.name);
+      setSubmittedType(formData.projectType);
+      setSubmitted(true);
+
+      setFormData({
+        name: '',
+        email: '',
+        projectType: 'Web Novel Cover Art',
+        budget: '$250 - $500',
+        description: '',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const clearHistory = () => {
@@ -238,7 +344,7 @@ export default function InquiryForm() {
                       Inquiry Berhasil Terkirim!
                     </h4>
                     <p className="font-sans text-xs text-emerald-800 leading-relaxed mt-1">
-                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah terdaftar di dalam sistem arsip lokal portofolio. Rosalia Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
+                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah terdaftar dalam sistem. Rosalia Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
                     </p>
                   </div>
                 </div>
@@ -252,6 +358,34 @@ export default function InquiryForm() {
                 </div>
               </div>
             ) : null}
+
+            {/* Error Display */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 p-6 rounded-lg text-left space-y-4">
+                <div className="flex items-start gap-4">
+                  <AlertCircle size={32} className="text-red-500 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-sans text-base font-bold text-red-950">
+                      Error Submitting Inquiry
+                    </h4>
+                    <p className="font-sans text-xs text-red-800 leading-relaxed mt-1">
+                      {error}
+                    </p>
+                    <p className="font-sans text-xs text-red-700 mt-2 italic">
+                      (Backup saved to local storage)
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-2">
+                  <button
+                    onClick={() => setError('')}
+                    className="font-sans text-xs font-bold text-red-800 hover:text-red-950 transition-colors cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Standard HTML Form */}
             <form onSubmit={handleSubmit} className="space-y-6" id="commission-inquiry-form">
@@ -350,20 +484,30 @@ export default function InquiryForm() {
               <button
                 type="submit"
                 id="submit-inquiry-btn"
-                className="w-full font-sans text-sm font-bold uppercase tracking-wider bg-brand-teal hover:bg-brand-teal/90 text-white py-4 rounded-lg shadow-md transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                disabled={isLoading}
+                className="w-full font-sans text-sm font-bold uppercase tracking-wider bg-brand-teal hover:bg-brand-teal/90 disabled:bg-brand-teal/50 disabled:cursor-not-allowed text-white py-4 rounded-lg shadow-md transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Send size={15} />
-                Submit Commission Inquiry
+                {isLoading ? (
+                  <>
+                    <Loader size={15} className="animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send size={15} />
+                    Submit Commission Inquiry
+                  </>
+                )}
               </button>
             </form>
 
-            {/* Past Inquiries Section (Durable Client Side History) */}
+            {/* Past Inquiries Section */}
             {pastInquiries.length > 0 && (
               <div className="space-y-5 pt-8 border-t border-brand-border/60" id="past-inquiries-archive">
                 <div className="flex items-center justify-between">
                   <h4 className="font-serif text-base font-bold text-brand-primary flex items-center gap-2">
                     <History size={16} className="text-brand-teal" />
-                    Sent Proposals (Durable local history)
+                    Sent Proposals ({pastInquiries.length})
                   </h4>
                   <button
                     onClick={clearHistory}
@@ -376,39 +520,56 @@ export default function InquiryForm() {
                   </button>
                 </div>
 
-                <div className="space-y-4 max-h-[250px] overflow-y-auto pr-2">
-                  {pastInquiries.map((inq) => (
-                    <div
-                      key={inq.id}
-                      className="p-4 rounded-lg bg-brand-surface-low border border-brand-border/50 text-left space-y-2 relative"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <span className="font-sans text-xs font-bold text-brand-primary">
-                            {inq.projectType}
-                          </span>
-                          <span className="text-brand-dark/40 text-[10px] block">
-                            Oleh: {inq.name} ({inq.email})
+                <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                  {pastInquiries.map((inq) => {
+                    const date = new Date(inq.submittedAt).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+
+                    const statusColors: Record<string, string> = {
+                      pending: 'bg-blue-100 text-blue-800',
+                      reviewed: 'bg-purple-100 text-purple-800',
+                      accepted: 'bg-emerald-100 text-emerald-800',
+                      rejected: 'bg-red-100 text-red-800',
+                    };
+
+                    return (
+                      <div
+                        key={inq.id}
+                        className="p-4 rounded-lg bg-brand-surface-low border border-brand-border/50 text-left space-y-2 relative"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="font-sans text-xs font-bold text-brand-primary">
+                              {inq.projectType}
+                            </span>
+                            <span className="text-brand-dark/40 text-[10px] block">
+                              Oleh: {inq.name} ({inq.email})
+                            </span>
+                          </div>
+                          <span className={`font-mono text-[9px] font-bold px-2 py-0.5 rounded capitalize ${statusColors[inq.status] || 'bg-gray-100 text-gray-800'}`}>
+                            {inq.status}
                           </span>
                         </div>
-                        <span className="font-mono text-[9px] text-brand-teal/80 bg-brand-teal/10 font-bold px-2 py-0.5 rounded">
-                          {inq.budget}
-                        </span>
+                        <p className="font-sans text-xs text-brand-dark/60 italic line-clamp-2">
+                          "{inq.description}"
+                        </p>
+                        <div className="flex justify-between items-center pt-2 border-t border-brand-border/30">
+                          <span className="font-mono text-[9px] text-brand-dark/40">
+                            {date}
+                          </span>
+                          <span className="font-sans text-[10px] text-brand-teal font-bold flex items-center gap-1">
+                            <span className="h-1.5 w-1.5 bg-brand-teal rounded-full animate-pulse" />
+                            {inq.budget}
+                          </span>
+                        </div>
                       </div>
-                      <p className="font-sans text-xs text-brand-dark/60 italic line-clamp-2">
-                        "{inq.description}"
-                      </p>
-                      <div className="flex justify-between items-center pt-2 border-t border-brand-border/30">
-                        <span className="font-mono text-[9px] text-brand-dark/40">
-                          {inq.date}
-                        </span>
-                        <span className="font-sans text-[10px] text-emerald-600 font-bold flex items-center gap-1">
-                          <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                          TERSEDIA DI ANTRIAN
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
