@@ -54,6 +54,7 @@ A beautiful portfolio website with a professional commission inquiry system.
 - **[BACKEND_SETUP.md](./BACKEND_SETUP.md)** - Detailed backend documentation
 - **[COMMISSION_BACKEND.md](./COMMISSION_BACKEND.md)** - Feature overview
 - **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - What was built
+- **[EMAIL_SETUP_GUIDE.md](./EMAIL_SETUP_GUIDE.md)** - Email notifications setup
 
 ## 🎯 Backend Features
 
@@ -130,10 +131,14 @@ PORT=5000
 NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 
-# Optional: Email notifications
-# EMAIL_API_KEY=your_key
-# EMAIL_FROM=noreply@rosalia-arts.com
+# Email Configuration (Gmail with App Password)
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-16-char-app-password
+EMAIL_TO=your-email@gmail.com
+EMAIL_FROM=Rosalia Arts <your-email@gmail.com>
 ```
+
+**See [EMAIL_SETUP_GUIDE.md](./EMAIL_SETUP_GUIDE.md) for detailed Gmail configuration instructions.**
 
 ## 🌐 Deployment
 

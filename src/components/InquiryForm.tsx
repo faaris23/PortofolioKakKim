@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, ShieldCheck, Clock, CheckCircle2, History, Trash2, Send, ExternalLink, HelpCircle, AlertCircle, Loader } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, ShieldCheck, Clock, CheckCircle2, AlertCircle, Send, ExternalLink, Loader } from 'lucide-react';
 
 interface SavedInquiry {
   id: string;
@@ -24,64 +24,11 @@ export default function InquiryForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedName, setSubmittedName] = useState('');
   const [submittedType, setSubmittedType] = useState('');
-  const [pastInquiries, setPastInquiries] = useState<SavedInquiry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
 
   // API configuration
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-  // Load past inquiries from backend on mount
-  useEffect(() => {
-    loadPastInquiries();
-  }, []);
-
-  const loadPastInquiries = async () => {
-    try {
-      setIsLoadingHistory(true);
-      // Try to load from backend first
-      const response = await fetch(`${API_URL}/api/inquiries`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.data) {
-          setPastInquiries(data.data);
-        }
-      } else {
-        // Fallback to localStorage
-        const saved = localStorage.getItem('aurelia_inquiries');
-        if (saved) {
-          try {
-            const inquiries = JSON.parse(saved).map((inq: any) => ({
-              ...inq,
-              submittedAt: inq.date || new Date().toISOString(),
-              status: 'pending',
-            }));
-            setPastInquiries(inquiries);
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('Backend not available, checking localStorage');
-      const saved = localStorage.getItem('aurelia_inquiries');
-      if (saved) {
-        try {
-          const inquiries = JSON.parse(saved).map((inq: any) => ({
-            ...inq,
-            submittedAt: inq.date || new Date().toISOString(),
-            status: 'pending',
-          }));
-          setPastInquiries(inquiries);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    } finally {
-      setIsLoadingHistory(false);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,29 +54,6 @@ export default function InquiryForm() {
 
       const result = await response.json();
 
-      // Create inquiry object for UI
-      const newInquiry: SavedInquiry = {
-        id: result.inquiryId,
-        name: formData.name,
-        email: formData.email,
-        projectType: formData.projectType,
-        budget: formData.budget,
-        description: formData.description,
-        submittedAt: new Date().toISOString(),
-        status: 'pending',
-      };
-
-      // Update local state
-      const updated = [newInquiry, ...pastInquiries];
-      setPastInquiries(updated);
-
-      // Also save to localStorage as backup
-      const localStorageData = updated.map(inq => ({
-        ...inq,
-        date: inq.submittedAt,
-      }));
-      localStorage.setItem('aurelia_inquiries', JSON.stringify(localStorageData));
-
       setSubmittedName(formData.name);
       setSubmittedType(formData.projectType);
       setSubmitted(true);
@@ -146,45 +70,8 @@ export default function InquiryForm() {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit inquiry';
       setError(errorMessage);
       console.error('Submission error:', err);
-
-      // Fallback to localStorage
-      const newInquiry: SavedInquiry = {
-        id: `inq-${Date.now()}`,
-        name: formData.name,
-        email: formData.email,
-        projectType: formData.projectType,
-        budget: formData.budget,
-        description: formData.description,
-        submittedAt: new Date().toISOString(),
-        status: 'pending',
-      };
-
-      const updated = [newInquiry, ...pastInquiries];
-      setPastInquiries(updated);
-      localStorage.setItem('aurelia_inquiries', JSON.stringify(
-        updated.map(inq => ({ ...inq, date: inq.submittedAt }))
-      ));
-
-      setSubmittedName(formData.name);
-      setSubmittedType(formData.projectType);
-      setSubmitted(true);
-
-      setFormData({
-        name: '',
-        email: '',
-        projectType: 'Web Novel Cover Art',
-        budget: '$250 - $500',
-        description: '',
-      });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const clearHistory = () => {
-    if (window.confirm('Clear all inquiry history?')) {
-      localStorage.removeItem('aurelia_inquiries');
-      setPastInquiries([]);
     }
   };
 
@@ -341,10 +228,13 @@ export default function InquiryForm() {
                   <CheckCircle2 size={32} className="text-emerald-500 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-sans text-base font-bold text-emerald-950">
-                      Inquiry Berhasil Terkirim!
+                      Inquiry Berhasil Terkirim! ✨
                     </h4>
                     <p className="font-sans text-xs text-emerald-800 leading-relaxed mt-1">
-                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah terdaftar dalam sistem. Rosalia Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
+                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah kami terima. Notifikasi email telah dikirim dan Rosalia Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
+                    </p>
+                    <p className="font-sans text-xs text-emerald-700 mt-2 italic">
+                      Periksa email Anda (termasuk folder spam) untuk respons dari kami.
                     </p>
                   </div>
                 </div>
@@ -501,78 +391,8 @@ export default function InquiryForm() {
               </button>
             </form>
 
-            {/* Past Inquiries Section */}
-            {pastInquiries.length > 0 && (
-              <div className="space-y-5 pt-8 border-t border-brand-border/60" id="past-inquiries-archive">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-serif text-base font-bold text-brand-primary flex items-center gap-2">
-                    <History size={16} className="text-brand-teal" />
-                    Sent Proposals ({pastInquiries.length})
-                  </h4>
-                  <button
-                    onClick={clearHistory}
-                    id="clear-inquiry-history"
-                    className="text-brand-dark/40 hover:text-red-500 font-sans text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
-                    title="Clear history"
-                  >
-                    <Trash2 size={13} />
-                    Hapus Semua
-                  </button>
-                </div>
-
-                <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                  {pastInquiries.map((inq) => {
-                    const date = new Date(inq.submittedAt).toLocaleDateString('id-ID', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    });
-
-                    const statusColors: Record<string, string> = {
-                      pending: 'bg-blue-100 text-blue-800',
-                      reviewed: 'bg-purple-100 text-purple-800',
-                      accepted: 'bg-emerald-100 text-emerald-800',
-                      rejected: 'bg-red-100 text-red-800',
-                    };
-
-                    return (
-                      <div
-                        key={inq.id}
-                        className="p-4 rounded-lg bg-brand-surface-low border border-brand-border/50 text-left space-y-2 relative"
-                      >
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <span className="font-sans text-xs font-bold text-brand-primary">
-                              {inq.projectType}
-                            </span>
-                            <span className="text-brand-dark/40 text-[10px] block">
-                              Oleh: {inq.name} ({inq.email})
-                            </span>
-                          </div>
-                          <span className={`font-mono text-[9px] font-bold px-2 py-0.5 rounded capitalize ${statusColors[inq.status] || 'bg-gray-100 text-gray-800'}`}>
-                            {inq.status}
-                          </span>
-                        </div>
-                        <p className="font-sans text-xs text-brand-dark/60 italic line-clamp-2">
-                          "{inq.description}"
-                        </p>
-                        <div className="flex justify-between items-center pt-2 border-t border-brand-border/30">
-                          <span className="font-mono text-[9px] text-brand-dark/40">
-                            {date}
-                          </span>
-                          <span className="font-sans text-[10px] text-brand-teal font-bold flex items-center gap-1">
-                            <span className="h-1.5 w-1.5 bg-brand-teal rounded-full animate-pulse" />
-                            {inq.budget}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+            {/* Past Inquiries Section (ADMIN ONLY - Not shown to public) */}
+            {/* This section is hidden from public view and only visible in AdminDashboard */}
 
           </div>
         </div>

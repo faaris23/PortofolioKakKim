@@ -1,13 +1,35 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
+import * as express from 'express';
+import * as corsLib from 'cors';
+import * as dotenvLib from 'dotenv';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as nodemailerLib from 'nodemailer';
+
+const cors = corsLib.default;
+const dotenv = dotenvLib.default;
+const nodemailer = nodemailerLib.default;
+
+type Request = express.Request;
+type Response = express.Response;
 
 dotenv.config();
 
-const app = express();
+const expressLib = (express as any).default || express;
+const app = expressLib();
 const PORT = process.env.PORT || 5000;
+
+// Email transporter setup
+let transporter: nodemailerLib.Transporter | null = null;
+
+if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+}
 
 // Middleware
 app.use(cors({
@@ -61,18 +83,85 @@ const writeInquiries = (inquiries: Inquiry[]): void => {
 
 // Helper function to send email notification
 const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
-  try {
-    // Using Gmail API or SendGrid - configure based on your preference
-    const apiKey = process.env.EMAIL_API_KEY;
-    
-    if (!apiKey) {
-      console.warn('EMAIL_API_KEY not configured, skipping email notification');
-      return false;
-    }
+  if (!transporter) {
+    console.warn('Email not configured. Please set EMAIL_USER and EMAIL_PASSWORD in .env');
+    return false;
+  }
 
-    // Example: Using nodemailer (you'll need to install it separately)
-    // For now, we'll just log it
-    console.log(`Email notification would be sent for inquiry: ${inquiry.id}`);
+  try {
+    const emailContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #1a3a3a; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+    .content { background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
+    .field { margin-bottom: 15px; }
+    .field-label { font-weight: bold; color: #1a3a3a; }
+    .field-value { color: #555; margin-top: 5px; }
+    .footer { background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #666; border-radius: 0 0 8px 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>🎨 New Commission Inquiry from Rosalia Arts</h2>
+    </div>
+    <div class="content">
+      <div class="field">
+        <div class="field-label">Client Name:</div>
+        <div class="field-value">${inquiry.name}</div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Email Address:</div>
+        <div class="field-value"><a href="mailto:${inquiry.email}">${inquiry.email}</a></div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Project Type:</div>
+        <div class="field-value">${inquiry.projectType}</div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Budget Range:</div>
+        <div class="field-value">${inquiry.budget}</div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Project Description:</div>
+        <div class="field-value">${inquiry.description}</div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Submitted At:</div>
+        <div class="field-value">${new Date(inquiry.submittedAt).toLocaleString('id-ID')}</div>
+      </div>
+      
+      <div class="field">
+        <div class="field-label">Inquiry ID:</div>
+        <div class="field-value">${inquiry.id}</div>
+      </div>
+    </div>
+    <div class="footer">
+      <p>This is an automated email from Rosalia Arts Commission System.</p>
+      <p>You can view and manage all inquiries in your admin dashboard.</p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM || 'Rosalia Arts <noreply@rosalia-arts.com>',
+      to: process.env.EMAIL_TO || process.env.EMAIL_USER,
+      subject: `New Commission Inquiry: ${inquiry.projectType}`,
+      html: emailContent,
+    });
+
+    console.log(`✉️ Email sent for inquiry: ${inquiry.id}`);
     return true;
   } catch (error) {
     console.error('Failed to send email:', error);
@@ -279,6 +368,7 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
+    emailConfigured: !!transporter,
   });
 });
 
@@ -294,7 +384,11 @@ app.use((err: any, req: Request, res: Response) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`✨ Rosalia Arts Commission Backend running on port ${PORT}`);
-  console.log(`📧 Data storage: ${INQUIRIES_FILE}`);
+  console.log(`📧 Email notifications: ${transporter ? '✅ ENABLED' : '❌ DISABLED'}`);
+  if (!transporter) {
+    console.log('   To enable email: Set EMAIL_USER and EMAIL_PASSWORD in .env');
+  }
+  console.log(`📊 Data storage: ${INQUIRIES_FILE}`);
   console.log(`🚀 API ready for inquiries`);
 });
 
