@@ -1,4 +1,4 @@
-# 📚 Documentation Index - Rosalia Arts Commission Backend
+# 📚 Documentation Index - Thea Arts Commission Backend
 
 ## Start Here 👈
 

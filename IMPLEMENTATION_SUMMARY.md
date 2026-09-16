@@ -1,4 +1,4 @@
-# ✨ Rosalia Arts Commission Backend - Implementation Summary
+# ✨ Thea Arts Commission Backend - Implementation Summary
 
 ## 🎯 What Was Built
 
@@ -379,6 +379,6 @@ Visit http://localhost:3000 and submit a commission inquiry!
 
 ---
 
-**Built with ✨ for Rosalia Arts**
+**Built with ✨ for Thea Arts**
 
 Questions? Check the documentation files or review the source code.

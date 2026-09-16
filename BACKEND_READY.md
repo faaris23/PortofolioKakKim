@@ -1,4 +1,4 @@
-# 🎉 Rosalia Arts Commission Backend - Complete Setup Summary
+# 🎉 Thea Arts Commission Backend - Complete Setup Summary
 
 ## ✅ Status: READY TO GO! 🚀
 

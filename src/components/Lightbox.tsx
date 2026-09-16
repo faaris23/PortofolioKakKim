@@ -177,7 +177,7 @@ export default function Lightbox({ artwork, onClose, onNext, onPrev }: LightboxP
 
           {/* Quick Notice footer inside lightbox */}
           <div className="mt-8 pt-6 border-t border-brand-border/40 text-[10px] font-sans text-brand-dark/50 flex items-center justify-between">
-            <span>© Rosalia Arts. All rights reserved.</span>
+            <span>© Thea Arts. All rights reserved.</span>
             <span className="font-semibold text-brand-teal">Available for License</span>
           </div>
         </div>

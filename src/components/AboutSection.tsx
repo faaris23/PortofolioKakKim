@@ -25,10 +25,9 @@ export default function AboutSection() {
     },
   ];
 
+  // taroh milestones di sini, misalnya:
   const milestones = [
-    { year: '2023 - Present', text: 'Lead cover artist for several Korean web novels (fantasy genre)' },
-    { year: '2022', text: 'Serialized independent full-color comic "Neural Overdrive"' },
-    { year: '2021', text: 'VGen certified designer and premium chibi illustrator' },
+    { year: '2026 - Present', text: 'Lead cover artist for several Korean web novels (fantasy genre)' }
   ];
 
   return (
@@ -42,7 +41,7 @@ export default function AboutSection() {
             <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-brand-border/60 bg-brand-surface-low shadow-xl">
               <img
                 src={`${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Profile_1.webp`}
-                alt="Rosalia Arts - Profile Portrait"
+                alt="Thea Arts - Profile Portrait"
                 className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
@@ -72,7 +71,7 @@ export default function AboutSection() {
                 ARTIST PROFILE
               </span>
               <h2 className="font-serif text-4xl md:text-5xl font-bold tracking-tight text-brand-primary">
-                Halo, Saya Rosalia.
+                Halo, Saya Thea.
               </h2>
               <p className="font-serif text-lg text-brand-teal/80 italic mt-3">
                 "Connecting transient reality and celestial dreamscapes through precise ink and golden hues."

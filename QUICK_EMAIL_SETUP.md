@@ -23,7 +23,7 @@ Open `.env` file and replace:
 EMAIL_USER=your-actual-email@gmail.com
 EMAIL_PASSWORD=abcdefghijklmnop
 EMAIL_TO=your-actual-email@gmail.com
-EMAIL_FROM=Rosalia Arts <your-actual-email@gmail.com>
+EMAIL_FROM=Thea Arts <your-actual-email@gmail.com>
 ```
 
 **Important**: Remove any spaces from the app password

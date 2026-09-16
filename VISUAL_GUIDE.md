@@ -5,7 +5,7 @@
 ### Frontend (React)
 ```
 ┌─────────────────────────────────────┐
-│  ROSALIA ARTS WEBSITE               │
+│  THEA ARTS WEBSITE                  │
 │  ┌─────────────────────────────────┐│
 │  │ Portfolio | Series | About       ││
 │  │ COMMISSIONS [NEW BACKEND] ✨      ││

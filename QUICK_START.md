@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide - Rosalia Arts Commission Backend
+# 🚀 Quick Start Guide - Thea Arts Commission Backend
 
 ## What You Just Got
 

@@ -1,4 +1,4 @@
-# Rosalia Arts Commission Backend
+# Thea Arts Commission Backend
 
 ✨ A complete backend system for managing commission inquiries from your website.
 
@@ -358,7 +358,7 @@ If you encounter issues:
 
 ## 📄 License
 
-Part of Rosalia Arts portfolio. See LICENSE file.
+Part of Thea Arts portfolio. See LICENSE file.
 
 ---
 

@@ -34,7 +34,7 @@ Open the `.env` file in your project root and replace the placeholder values:
 EMAIL_USER=your-actual-email@gmail.com
 EMAIL_PASSWORD=abcdefghijklmnop
 EMAIL_TO=your-actual-email@gmail.com
-EMAIL_FROM=Rosalia Arts <your-actual-email@gmail.com>
+EMAIL_FROM=Thea Arts <your-actual-email@gmail.com>
 ```
 
 **Important:**
@@ -53,7 +53,7 @@ npm run dev:all
 
 You should see:
 ```
-✨ Rosalia Arts Commission Backend running on port 5000
+✨ Thea Arts Commission Backend running on port 5000
 📧 Email notifications: ✅ ENABLED
 ```
 

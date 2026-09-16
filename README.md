@@ -2,7 +2,7 @@
 <img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
 </div>
 
-# 🎨 Rosalia Arts - Commission Portfolio
+# 🎨 Thea Arts - Commission Portfolio
 
 A beautiful portfolio website with a professional commission inquiry system.
 
@@ -135,7 +135,7 @@ FRONTEND_URL=http://localhost:3000
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASSWORD=your-16-char-app-password
 EMAIL_TO=your-email@gmail.com
-EMAIL_FROM=Rosalia Arts <your-email@gmail.com>
+EMAIL_FROM=Thea Arts <your-email@gmail.com>
 ```
 
 **See [EMAIL_SETUP_GUIDE.md](./EMAIL_SETUP_GUIDE.md) for detailed Gmail configuration instructions.**
@@ -201,7 +201,7 @@ PORT=5001
 
 ## 📝 License
 
-Part of Rosalia Arts portfolio.
+Part of Thea Arts portfolio.
 
 ---
 

@@ -40,7 +40,7 @@ export const ARTWORKS: Artwork[] = [
     title: "Dan Heng and Stelles Blossoom",
     category: 'Art',
     imageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/DanStelle.webp`,
-    description: 'An elegant digital painting capturing the quiet, dramatic descent of a dark princess under a flock of crows, featuring rich fabric textures and floating obsidian feathers.',
+    description: ' An elegant digital painting capturing the quiet, dramatic art for the guardian maidens and the god of the earth, Terravox.',
     year: '2024',
     aspectRatio: '3:4',
     medium: 'Digital Painting (Clip Studio Paint)',
@@ -53,7 +53,7 @@ export const ARTWORKS: Artwork[] = [
     title: 'Hope/For Tomorrow',
     category: 'Comic/Novel Cover',
     imageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Cover_art_1.webp`,
-    description: 'The official cover illustration for a fantasy web novel, depicting a giant ancient stone sentinel emitting magical energy, with two tiny travelers looking up in awe.',
+    description: 'The official cover illustration for a fantasy web novel, Fantasy Romance genre story about hope with elegant manhwa steyl and elegant main character leading eachother on their shoulders',
     year: '2024',
     aspectRatio: '3:4',
     medium: 'Digital Painting (Photoshop)',
@@ -64,7 +64,7 @@ export const ARTWORKS: Artwork[] = [
     title: 'PRISMATIC',
     category: 'Comic/Novel Cover',
     imageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Prismatic-december-ART.webp`,
-    description: 'A striking cover featuring a split-face lighting effect on an elf girl wearing a modern digital headset, showing the contrast between organic fantasy and cold synth magic.',
+    description: 'A cover for the highschool love story, with warmth art and lighting for romantic-comedy school vibe.',
     year: '2024',
     aspectRatio: '3:4',
     medium: 'Digital Painting (Procreate)',
@@ -133,48 +133,36 @@ export const ARTWORKS: Artwork[] = [
 
 export const STORIES_SERIES: StorySeries[] = [
   {
-    id: 'crimson-kingdom',
-    title: 'The Crimson Kingdom',
-    subtitle: 'CURATED WORLDS',
-    description: 'A high-fantasy narrative exploring the intricate court politics and forbidden magic of a realm fractured by celestial lineage. Each piece captures a moment of tension between legacy and desire, weaving ornate manhwa lines with majestic light.',
-    mainImageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
-    archivedCount: 14,
-    tags: ['High Fantasy', 'Royal Politics', 'Court Drama'],
+    id: 'prismatic',
+    title: 'Prismatic',
+    subtitle: 'COMIC PROJECT',
+    description: '',
+    mainImageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Prismatic-december-ART.webp`,
+    archivedCount: 1,
+    tags: ['Comic', 'Fantasy', 'Prismatic'],
     artworks: [
       {
-        title: 'Prince Arka: The Formal Guard',
-        role: 'CHARACTER STUDY / 2024',
+        title: 'Prismatic',
+        role: 'COMIC COVER / 2024',
         year: '2024',
-        imageUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80'
-      },
-      {
-        title: 'The Silent Promenade',
-        role: 'BACKGROUND CONCEPT / 2024',
-        year: '2024',
-        imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&auto=format&fit=crop&q=80'
+        imageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Prismatic-december-ART.webp`
       }
     ]
   },
   {
-    id: 'digital-echoes',
-    title: 'Digital Echoes',
-    subtitle: 'ONGOING STORIES',
-    description: 'An exploration of transhumanism and memory in a post-biological world. These illustrations contrast cold, geometric structures and bright neon cybernetic augmentation with the soft, organic remnants of human emotion.',
-    mainImageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80',
-    archivedCount: 8,
-    tags: ['Cyberpunk', 'Transhumanism', 'Sci-Fi'],
+    id: 'honkai-star-rail-school-life',
+    title: 'Honkai Star Rail: School Life',
+    subtitle: 'COMIC PROJECT',
+    description: '',
+    mainImageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Cover-comic-Kyris-1.webp`,
+    archivedCount: 1,
+    tags: ['Honkai: Star Rail', 'School Life', 'Fan Comic'],
     artworks: [
       {
-        title: 'Fragmented Reality 01',
-        role: 'KEY ART / 2023',
-        year: '2023',
-        imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80'
-      },
-      {
-        title: 'The Last Connection',
-        role: 'ILLUSTRATION / 2023',
-        year: '2023',
-        imageUrl: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=800&auto=format&fit=crop&q=80'
+        title: 'Honkai Star Rail: School Life',
+        role: 'COMIC COVER / 2024',
+        year: '2024',
+        imageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Cover-comic-Kyris-1.webp`
       }
     ]
   }

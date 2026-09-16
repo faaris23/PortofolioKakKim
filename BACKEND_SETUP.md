@@ -1,4 +1,4 @@
-# Rosalia Arts Commission Backend Setup Guide
+# Thea Arts Commission Backend Setup Guide
 
 This document explains how to set up and run the backend server for the commission inquiry form.
 
@@ -415,4 +415,4 @@ For issues or questions:
 
 ## License
 
-This backend is part of Rosalia Arts portfolio. See main LICENSE file.
+This backend is part of Thea Arts portfolio. See main LICENSE file.

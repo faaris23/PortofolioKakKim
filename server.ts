@@ -107,7 +107,7 @@ const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
 <body>
   <div class="container">
     <div class="header">
-      <h2>🎨 New Commission Inquiry from Rosalia Arts</h2>
+      <h2>🎨 New Commission Inquiry from Thea Arts</h2>
     </div>
     <div class="content">
       <div class="field">
@@ -146,7 +146,7 @@ const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
       </div>
     </div>
     <div class="footer">
-      <p>This is an automated email from Rosalia Arts Commission System.</p>
+      <p>This is an automated email from Thea Arts Commission System.</p>
       <p>You can view and manage all inquiries in your admin dashboard.</p>
     </div>
   </div>
@@ -155,7 +155,7 @@ const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
     `;
 
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM || 'Rosalia Arts <noreply@rosalia-arts.com>',
+      from: process.env.EMAIL_FROM || 'Thea Arts <noreply@rosalia-arts.com>',
       to: process.env.EMAIL_TO || process.env.EMAIL_USER,
       subject: `New Commission Inquiry: ${inquiry.projectType}`,
       html: emailContent,
@@ -383,7 +383,7 @@ app.use((err: any, req: Request, res: Response) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✨ Rosalia Arts Commission Backend running on port ${PORT}`);
+  console.log(`✨ Thea Arts Commission Backend running on port ${PORT}`);
   console.log(`📧 Email notifications: ${transporter ? '✅ ENABLED' : '❌ DISABLED'}`);
   if (!transporter) {
     console.log('   To enable email: Set EMAIL_USER and EMAIL_PASSWORD in .env');

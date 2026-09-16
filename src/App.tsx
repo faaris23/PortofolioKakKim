@@ -3,12 +3,12 @@ import Navbar from './components/Navbar';
 import ArtworkGrid from './components/ArtworkGrid';
 import SeriesShowcase from './components/SeriesShowcase';
 import AboutSection from './components/AboutSection';
-import InquiryForm from './components/InquiryForm';
+// import InquiryForm from './components/InquiryForm';
 import Lightbox from './components/Lightbox';
 import Footer from './components/Footer';
 import { ARTWORKS } from './data';
 import { Artwork } from './types';
-import { Sparkles, Heart, ShieldCheck, Mail, ChevronRight, MessageSquare, Compass, ExternalLink } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -77,7 +77,7 @@ export default function App() {
                     </div>
 
                     <p className="font-sans text-brand-dark/70 text-sm md:text-base leading-relaxed max-w-lg">
-                      Selamat datang di ruang aliansi seni Rosalia Arts. Temukan koleksi lukisan digital berkualitas tinggi, halaman promosi komik mingguan, desain sampul novel, dan ilustrasi chibi yang menggabungkan presisi garis dengan kehangatan warna.
+                      Selamat datang di ruang aliansi seni Thea Arts. Temukan koleksi lukisan digital berkualitas tinggi, halaman promosi komik mingguan, desain sampul novel, dan ilustrasi chibi yang menggabungkan presisi garis dengan kehangatan warna.
                     </p>
 
                     {/* High-End Quick Interaction Stats */}
@@ -120,6 +120,7 @@ export default function App() {
                         Explore Gallery
                         <ChevronRight size={14} />
                       </button>
+                      {/*
                       <button
                         onClick={() => setActiveTab('commissions')}
                         className="font-sans text-xs font-bold uppercase tracking-wider bg-white hover:bg-brand-surface-low text-brand-teal border border-brand-teal/20 px-7 py-4 rounded-lg transition-all cursor-pointer flex items-center gap-2"
@@ -127,6 +128,7 @@ export default function App() {
                         Inquire Slot
                         <Sparkles size={13} className="text-brand-gold animate-bounce" />
                       </button>
+                      */}
                     </div>
                   </div>
 
@@ -153,7 +155,7 @@ export default function App() {
                           Crows' Descent
                         </h2>
                         <p className="font-sans text-xs text-white/70 line-clamp-2 mt-2 leading-relaxed">
-                          Saksikan kemegahan bayang-bayang kegelapan dan bulu gagak obsidian yang mempesona di dalam lukisan digital orisinal karya Rosalia Arts.
+                          Saksikan kemegahan bayang-bayang kegelapan dan bulu gagak obsidian yang mempesona di dalam lukisan digital orisinal karya Thea Arts.
                         </p>
                         <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/10 text-[10px] font-mono text-brand-gold/90">
                           <span>Year: 2026</span>
@@ -201,6 +203,7 @@ export default function App() {
             </motion.div>
           )}
 
+          {/* Commission and inquiry section disabled temporarily.
           {activeTab === 'commissions' && (
             <motion.div
               key="commissions-tab"
@@ -212,6 +215,7 @@ export default function App() {
               <InquiryForm />
             </motion.div>
           )}
+          */}
         </AnimatePresence>
       </main>
 

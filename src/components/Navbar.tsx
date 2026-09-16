@@ -26,7 +26,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
     { id: 'portfolio', label: 'PORTFOLIO' },
     { id: 'series', label: 'SERIES ARCHIVE' },
     { id: 'about', label: 'ABOUT' },
-    { id: 'commissions', label: 'COMMISSION & INQUIRY' },
+    // { id: 'commissions', label: 'COMMISSION & INQUIRY' },
   ];
 
   return (
@@ -47,7 +47,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
             className="flex flex-col items-start text-left focus:outline-none group"
           >
             <span className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-brand-primary group-hover:text-brand-teal transition-colors">
-              Rosalia Arts
+              Thea Arts
             </span>
             <span className="font-sans text-[10px] tracking-[0.2em] text-brand-teal/80 font-semibold uppercase mt-0.5">
               Digital Illustrator
@@ -79,7 +79,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
             {/* Social Icons / Quick VGen links */}
             <div className="flex items-center space-x-4 border-l border-brand-border pl-6">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/thea.bags_/"
                 target="_blank"
                 rel="noreferrer"
                 id="social-instagram-nav"
@@ -98,6 +98,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
               >
                 <Twitter size={16} />
               </a>
+              {/* Commission link disabled temporarily.
               <a
                 href="https://vgen.co"
                 target="_blank"
@@ -109,6 +110,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <span className="font-sans tracking-wider">VGEN</span>
                 <ExternalLink size={10} />
               </a>
+              */}
             </div>
           </div>
 
@@ -155,7 +157,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
 
             <div className="flex items-center space-x-6 py-2">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/thea.bags_/"
                 target="_blank"
                 rel="noreferrer"
                 className="text-brand-dark/60 hover:text-brand-teal transition-colors flex items-center gap-2 text-xs font-medium"
@@ -164,7 +166,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <span>Instagram</span>
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/theabags_1399?s=20"
                 target="_blank"
                 rel="noreferrer"
                 className="text-brand-dark/60 hover:text-brand-teal transition-colors flex items-center gap-2 text-xs font-medium"
@@ -172,6 +174,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <Twitter size={16} />
                 <span>Twitter</span>
               </a>
+              {/* Commission link disabled temporarily.
               <a
                 href="https://vgen.co"
                 target="_blank"
@@ -181,6 +184,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <span>VGen</span>
                 <ExternalLink size={12} />
               </a>
+              */}
             </div>
           </div>
         </div>

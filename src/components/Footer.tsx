@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Instagram, Twitter, MessageSquare, ArrowUp, Send, CheckCircle } from 'lucide-react';
+import React from 'react';
+import { Instagram, Twitter, ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   setActiveTab: (tab: string) => void;
 }
 
 export default function Footer({ setActiveTab }: FooterProps) {
+  /* Newsletter feature disabled temporarily.
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [subscribersCount, setSubscribersCount] = useState(0);
@@ -44,6 +45,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
     setSubscribed(true);
     setEmail('');
   };
+  */
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -57,7 +59,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
           {/* Logo & Description */}
           <div className="md:col-span-4 space-y-4">
             <h3 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-white">
-              Rosalia Arts
+              Thea Arts
             </h3>
             <p className="font-sans text-xs text-white/60 leading-relaxed max-w-sm">
               An elegant space showcasing high-fantasy digital paintings, web novel covers, comic spreads, and custom character illustration commissions.
@@ -65,7 +67,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
             {/* Quick social links */}
             <div className="flex items-center space-x-4 pt-2">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/thea.bags_/"
                 target="_blank"
                 rel="noreferrer"
                 className="text-white/60 hover:text-brand-gold transition-colors"
@@ -74,7 +76,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
                 <Instagram size={18} />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/theabags_1399?s=20"
                 target="_blank"
                 rel="noreferrer"
                 className="text-white/60 hover:text-brand-gold transition-colors"
@@ -82,6 +84,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
               >
                 <Twitter size={18} />
               </a>
+              {/* Commission link disabled temporarily.
               <a
                 href="https://vgen.co"
                 target="_blank"
@@ -91,6 +94,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
               >
                 VGEN
               </a>
+              */}
             </div>
           </div>
 
@@ -125,6 +129,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
                     About Artist
                   </button>
                 </li>
+                {/* Commission and inquiry navigation disabled temporarily.
                 <li>
                   <button
                     onClick={() => setActiveTab('commissions')}
@@ -133,6 +138,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
                     Commission & Price
                   </button>
                 </li>
+                */}
               </ul>
             </div>
 
@@ -141,6 +147,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
                 EXTERNAL
               </span>
               <ul className="font-sans text-xs space-y-2.5 text-white/60">
+                {/* Commission link disabled temporarily.
                 <li>
                   <a
                     href="https://vgen.co"
@@ -151,6 +158,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
                     VGen Commission Page
                   </a>
                 </li>
+                */}
                 <li>
                   <a
                     href="https://artstation.com"
@@ -173,7 +181,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
             </div>
           </div>
 
-          {/* Newsletter subscription form */}
+          {/* Newsletter subscription form disabled temporarily.
           <div className="md:col-span-4 space-y-4" id="newsletter-subscription-panel">
             <span className="font-sans text-[10px] tracking-wider text-white/40 font-bold block">
               CHRONICLES NEWSLETTER
@@ -207,13 +215,14 @@ export default function Footer({ setActiveTab }: FooterProps) {
               </form>
             )}
           </div>
+          */}
 
         </div>
 
         {/* Footer Bottom copyright and scroll up */}
         <div className="pt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <span className="font-sans text-[10px] text-white/40">
-            © {new Date().getFullYear()} Rosalia Arts. All rights reserved. Designed with alchemical care.
+            © {new Date().getFullYear()} Thea Arts. All rights reserved. Designed with alchemical care.
           </span>
           <button
             onClick={scrollToTop}

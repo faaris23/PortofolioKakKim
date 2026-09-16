@@ -179,7 +179,7 @@ export default function InquiryForm() {
                 Terms of Service Overview
               </h4>
               <ul className="font-sans text-xs text-brand-dark/70 space-y-2.5 list-disc pl-4">
-                <li><strong>Personal vs Commercial:</strong> Prices on this page are for personal/cover use. Full copyright remains with Rosalia Arts, unless commercial licensing is purchased separately.</li>
+                <li><strong>Personal vs Commercial:</strong> Prices on this page are for personal/cover use. Full copyright remains with Thea Arts, unless commercial licensing is purchased separately.</li>
                 <li><strong>Turnaround Time:</strong> Typically 3 to 6 weeks, depending on complexity and slot queues.</li>
                 <li><strong>Payment Process:</strong> 50% upfront, remaining 50% after base color approval. Payments handled via Paypal or VGen only.</li>
                 <li><strong>Refunds:</strong> 100% refund available if work has not started. No refunds after the sketching phase is completed.</li>
@@ -231,7 +231,7 @@ export default function InquiryForm() {
                       Inquiry Berhasil Terkirim! ✨
                     </h4>
                     <p className="font-sans text-xs text-emerald-800 leading-relaxed mt-1">
-                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah kami terima. Notifikasi email telah dikirim dan Rosalia Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
+                      Terima kasih, <strong>{submittedName}</strong>! Pengajuan untuk <strong>{submittedType}</strong> telah kami terima. Notifikasi email telah dikirim dan Thea Arts akan menghubungi Anda melalui email dalam 1-3 hari kerja.
                     </p>
                     <p className="font-sans text-xs text-emerald-700 mt-2 italic">
                       Periksa email Anda (termasuk folder spam) untuk respons dari kami.
@@ -364,7 +364,7 @@ export default function InquiryForm() {
                   rows={5}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Tell Rosalia Arts about your characters, their hair, clothes, setting details, pose references, or web novel links. Let's make it epic..."
+                  placeholder="Tell Thea Arts about your characters, their hair, clothes, setting details, pose references, or web novel links. Let's make it epic..."
                   required
                   className="w-full font-sans text-sm bg-brand-bg border border-brand-border rounded-lg px-4 py-3 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal/30 transition-all resize-y"
                 />

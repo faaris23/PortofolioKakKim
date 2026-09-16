@@ -2,7 +2,7 @@
 
 ## 🎉 What's Ready
 
-Your Rosalia Arts website now has a **fully functional commission backend with email notifications**:
+Your Thea Arts website now has a **fully functional commission backend with email notifications**:
 
 ```
 ✨ Backend System
@@ -172,7 +172,7 @@ FRONTEND_URL=http://localhost:3000
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASSWORD=your-16-char-app-password
 EMAIL_TO=your-email@gmail.com
-EMAIL_FROM=Rosalia Arts <your-email@gmail.com>
+EMAIL_FROM=Thea Arts <your-email@gmail.com>
 ```
 
 **Need help setting up email?** → **[See EMAIL_SETUP_GUIDE.md](./EMAIL_SETUP_GUIDE.md)**
