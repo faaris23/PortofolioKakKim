@@ -7,6 +7,7 @@ export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
     base: process.env.VERCEL ? '/' : '/PortofolioKakKim/',
+    publicDir: 'Public',
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
