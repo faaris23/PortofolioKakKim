@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as corsLib from 'cors';
+import * as crypto from 'crypto';
 import * as dotenvLib from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -44,8 +45,10 @@ const escapeHtml = (value: string): string => {
 const requireAdminKey = (req: Request, res: Response, next: express.NextFunction) => {
   const configuredKey = process.env.ADMIN_API_KEY;
   const providedKey = req.header('x-admin-key');
+  const configuredDigest = crypto.createHash('sha256').update(configuredKey || '').digest();
+  const providedDigest = crypto.createHash('sha256').update(providedKey || '').digest();
 
-  if (!configuredKey || providedKey !== configuredKey) {
+  if (!configuredKey || !crypto.timingSafeEqual(providedDigest, configuredDigest)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
