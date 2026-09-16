@@ -4,10 +4,12 @@ import * as dotenvLib from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as nodemailerLib from 'nodemailer';
+import * as rateLimitLib from 'express-rate-limit';
 
-const cors = corsLib.default;
-const dotenv = dotenvLib.default;
-const nodemailer = nodemailerLib.default;
+const cors = (corsLib as any).default || corsLib;
+const dotenv = (dotenvLib as any).default || dotenvLib;
+const nodemailer = (nodemailerLib as any).default || nodemailerLib;
+const rateLimit = (rateLimitLib as any).default || rateLimitLib;
 
 type Request = express.Request;
 type Response = express.Response;
@@ -17,6 +19,49 @@ dotenv.config();
 const expressLib = (express as any).default || express;
 const app = expressLib();
 const PORT = process.env.PORT || 5000;
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction && !process.env.FRONTEND_URL) {
+  throw new Error('FRONTEND_URL must be set in production; refusing to start with an unsafe CORS configuration.');
+}
+
+if (isProduction && !process.env.ADMIN_API_KEY) {
+  throw new Error('ADMIN_API_KEY must be set in production; refusing to start without admin authentication.');
+}
+
+const escapeHtml = (value: string): string => {
+  const entities: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  return value.replace(/[&<>"']/g, (character) => entities[character]);
+};
+
+const requireAdminKey = (req: Request, res: Response, next: express.NextFunction) => {
+  const configuredKey = process.env.ADMIN_API_KEY;
+  const providedKey = req.header('x-admin-key');
+
+  if (!configuredKey || providedKey !== configuredKey) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  next();
+};
+
+const inquiryRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    error: 'Too many inquiries',
+    message: 'Please try again later.',
+  },
+});
 
 // Email transporter setup
 let transporter: nodemailerLib.Transporter | null = null;
@@ -33,8 +78,8 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.FRONTEND_URL || 'https://your-domain.com'
+  origin: isProduction
+    ? process.env.FRONTEND_URL
     : ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true,
 }));
@@ -112,37 +157,37 @@ const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
     <div class="content">
       <div class="field">
         <div class="field-label">Client Name:</div>
-        <div class="field-value">${inquiry.name}</div>
+        <div class="field-value">${escapeHtml(inquiry.name)}</div>
       </div>
       
       <div class="field">
         <div class="field-label">Email Address:</div>
-        <div class="field-value"><a href="mailto:${inquiry.email}">${inquiry.email}</a></div>
+        <div class="field-value"><a href="mailto:${escapeHtml(inquiry.email)}">${escapeHtml(inquiry.email)}</a></div>
       </div>
       
       <div class="field">
         <div class="field-label">Project Type:</div>
-        <div class="field-value">${inquiry.projectType}</div>
+        <div class="field-value">${escapeHtml(inquiry.projectType)}</div>
       </div>
       
       <div class="field">
         <div class="field-label">Budget Range:</div>
-        <div class="field-value">${inquiry.budget}</div>
+        <div class="field-value">${escapeHtml(inquiry.budget)}</div>
       </div>
       
       <div class="field">
         <div class="field-label">Project Description:</div>
-        <div class="field-value">${inquiry.description}</div>
+        <div class="field-value">${escapeHtml(inquiry.description)}</div>
       </div>
       
       <div class="field">
         <div class="field-label">Submitted At:</div>
-        <div class="field-value">${new Date(inquiry.submittedAt).toLocaleString('id-ID')}</div>
+        <div class="field-value">${escapeHtml(new Date(inquiry.submittedAt).toLocaleString('id-ID'))}</div>
       </div>
       
       <div class="field">
         <div class="field-label">Inquiry ID:</div>
-        <div class="field-value">${inquiry.id}</div>
+        <div class="field-value">${escapeHtml(inquiry.id)}</div>
       </div>
     </div>
     <div class="footer">
@@ -173,12 +218,23 @@ const sendEmailNotification = async (inquiry: Inquiry): Promise<boolean> => {
  * POST /api/inquiries
  * Submit a new commission inquiry
  */
-app.post('/api/inquiries', async (req: Request, res: Response) => {
+app.post('/api/inquiries', inquiryRateLimiter, async (req: Request, res: Response) => {
   try {
     const { name, email, projectType, budget, description } = req.body;
 
     // Validation
-    if (!name || !email || !projectType || !budget || !description) {
+    if (
+      typeof name !== 'string' ||
+      typeof email !== 'string' ||
+      typeof projectType !== 'string' ||
+      typeof budget !== 'string' ||
+      typeof description !== 'string' ||
+      !name.trim() ||
+      !email.trim() ||
+      !projectType.trim() ||
+      !budget.trim() ||
+      !description.trim()
+    ) {
       return res.status(400).json({
         error: 'All fields are required',
         message: 'Please fill in all form fields',
@@ -239,9 +295,8 @@ app.post('/api/inquiries', async (req: Request, res: Response) => {
  * GET /api/inquiries
  * Retrieve all inquiries (protected route in production)
  */
-app.get('/api/inquiries', (req: Request, res: Response) => {
+app.get('/api/inquiries', requireAdminKey, (req: Request, res: Response) => {
   try {
-    // In production, add authentication here
     const inquiries = readInquiries();
     return res.status(200).json({
       success: true,
@@ -261,7 +316,7 @@ app.get('/api/inquiries', (req: Request, res: Response) => {
  * GET /api/inquiries/:id
  * Retrieve a specific inquiry
  */
-app.get('/api/inquiries/:id', (req: Request, res: Response) => {
+app.get('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const inquiries = readInquiries();
@@ -290,7 +345,7 @@ app.get('/api/inquiries/:id', (req: Request, res: Response) => {
  * PATCH /api/inquiries/:id
  * Update inquiry status (for admin)
  */
-app.patch('/api/inquiries/:id', (req: Request, res: Response) => {
+app.patch('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -334,7 +389,7 @@ app.patch('/api/inquiries/:id', (req: Request, res: Response) => {
  * DELETE /api/inquiries/:id
  * Delete an inquiry
  */
-app.delete('/api/inquiries/:id', (req: Request, res: Response) => {
+app.delete('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const inquiries = readInquiries();
@@ -368,7 +423,6 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    emailConfigured: !!transporter,
   });
 });
 
