@@ -188,7 +188,7 @@ export default function InquiryForm() {
 
             {/* VGen Callout Card */}
             <a
-              href="https://vgen.co"
+              href="https://vgen.co/Theabags_1399"
               target="_blank"
               rel="noreferrer"
               className="block p-6 bg-brand-teal/5 border border-brand-teal/20 hover:border-brand-teal/50 hover:shadow-sm rounded-lg group transition-all duration-300"

@@ -19,7 +19,7 @@ export default function AboutSection() {
       proof: 'Pendukung utama dalam pembuatan sketsa cepat, eksplorasi komposisi cerita (thumbnailing), serta seluruh pengerjaan pesanan ilustrasi chibi.'
     },
     {
-      name: 'Wacom Cintiq Pro 24',
+      name: 'Pen Tablet',
       detail: 'Primary hardware display',
       proof: 'Perangkat keras utama dengan kalibrasi warna sRGB penuh untuk menjamin akurasi warna yang konsisten antara layar digital dan hasil cetak.'
     },
@@ -27,7 +27,7 @@ export default function AboutSection() {
 
   // taroh milestones di sini, misalnya:
   const milestones = [
-    { year: '2026 - Present', text: 'Lead cover artist for several Korean web novels (fantasy genre)' }
+    { year: '2026 - Present', text: 'Lead cover artist' }
   ];
 
   return (
@@ -51,7 +51,7 @@ export default function AboutSection() {
                   THE ALCHEMIST
                 </span>
                 <h4 className="font-serif text-xl font-bold text-brand-primary mt-1">
-                  Rosalia
+                  Thea
                 </h4>
                 <p className="font-sans text-[11px] text-brand-dark/70 mt-1">
                   Indonesia-based Digital Illustrator & Character Designer

@@ -98,9 +98,8 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
               >
                 <Twitter size={16} />
               </a>
-              {/* Commission link disabled temporarily.
               <a
-                href="https://vgen.co"
+                href="https://vgen.co/Theabags_1399"
                 target="_blank"
                 rel="noreferrer"
                 id="social-vgen-nav"
@@ -110,7 +109,6 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <span className="font-sans tracking-wider">VGEN</span>
                 <ExternalLink size={10} />
               </a>
-              */}
             </div>
           </div>
 
@@ -174,9 +172,8 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <Twitter size={16} />
                 <span>Twitter</span>
               </a>
-              {/* Commission link disabled temporarily.
               <a
-                href="https://vgen.co"
+                href="https://vgen.co/Theabags_1399"
                 target="_blank"
                 rel="noreferrer"
                 className="text-brand-dark/60 hover:text-brand-teal transition-colors flex items-center gap-1.5 text-xs font-medium"
@@ -184,7 +181,6 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
                 <span>VGen</span>
                 <ExternalLink size={12} />
               </a>
-              */}
             </div>
           </div>
         </div>

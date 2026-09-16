@@ -84,9 +84,8 @@ export default function Footer({ setActiveTab }: FooterProps) {
               >
                 <Twitter size={18} />
               </a>
-              {/* Commission link disabled temporarily.
               <a
-                href="https://vgen.co"
+                href="https://vgen.co/Theabags_1399"
                 target="_blank"
                 rel="noreferrer"
                 className="text-white/60 hover:text-brand-gold font-sans text-xs font-bold transition-colors"
@@ -94,7 +93,6 @@ export default function Footer({ setActiveTab }: FooterProps) {
               >
                 VGEN
               </a>
-              */}
             </div>
           </div>
 
@@ -147,10 +145,9 @@ export default function Footer({ setActiveTab }: FooterProps) {
                 EXTERNAL
               </span>
               <ul className="font-sans text-xs space-y-2.5 text-white/60">
-                {/* Commission link disabled temporarily.
                 <li>
                   <a
-                    href="https://vgen.co"
+                    href="https://vgen.co/Theabags_1399"
                     target="_blank"
                     rel="noreferrer"
                     className="hover:text-white transition-colors flex items-center gap-1"
@@ -158,7 +155,6 @@ export default function Footer({ setActiveTab }: FooterProps) {
                     VGen Commission Page
                   </a>
                 </li>
-                */}
                 <li>
                   <a
                     href="https://artstation.com"
