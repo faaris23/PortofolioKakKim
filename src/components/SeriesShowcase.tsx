@@ -79,7 +79,7 @@ export default function SeriesShowcase() {
                         </span>
                         <span className="font-sans text-xs font-bold text-brand-teal flex items-center gap-1">
                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          Active Monthly
+                          On Hiatus
                         </span>
                       </div>
                     </div>
