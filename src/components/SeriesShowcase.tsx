@@ -94,17 +94,37 @@ export default function SeriesShowcase() {
                       className="group/item relative bg-brand-surface-lowest rounded-lg overflow-hidden border border-brand-border/40 hover:border-brand-teal/30 hover:shadow-md transition-all duration-300 flex flex-col"
                     >
                       {/* Visual Container */}
-                      <div className="aspect-[3/4] relative overflow-hidden bg-brand-surface-low">
-                        <img
-                          src={art.imageUrl}
-                          alt={art.title}
-                          className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500"
-                          referrerPolicy="no-referrer"
-                          loading="lazy"
-                        />
-                        {/* Overlay subtle color shade */}
-                        <div className="absolute inset-0 bg-brand-teal/5 opacity-40 mix-blend-multiply" />
-                      </div>
+                      {series.externalUrl ? (
+                        <a
+                          href={series.externalUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`Open ${series.title} online`}
+                          className="aspect-[3/4] relative overflow-hidden bg-brand-surface-low block"
+                        >
+                          <img
+                            src={art.imageUrl}
+                            alt={art.title}
+                            className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500"
+                            referrerPolicy="no-referrer"
+                            loading="lazy"
+                          />
+                          {/* Overlay subtle color shade */}
+                          <div className="absolute inset-0 bg-brand-teal/5 opacity-40 mix-blend-multiply" />
+                        </a>
+                      ) : (
+                        <div className="aspect-[3/4] relative overflow-hidden bg-brand-surface-low">
+                          <img
+                            src={art.imageUrl}
+                            alt={art.title}
+                            className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-500"
+                            referrerPolicy="no-referrer"
+                            loading="lazy"
+                          />
+                          {/* Overlay subtle color shade */}
+                          <div className="absolute inset-0 bg-brand-teal/5 opacity-40 mix-blend-multiply" />
+                        </div>
+                      )}
 
                       {/* Info Panel */}
                       <div className="p-4 flex flex-col justify-between flex-grow">

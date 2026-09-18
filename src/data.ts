@@ -138,6 +138,7 @@ export const STORIES_SERIES: StorySeries[] = [
     subtitle: 'COMIC PROJECT',
     description: 'A cover for the highschool love story, with warmth art and lighting for romantic-comedy school vibe.',
     mainImageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Prismatic-december-ART.webp`,
+    externalUrl: 'https://www.webtoons.com/id/canvas/prismatic/list?title_no=964968',
     archivedCount: 1,
     tags: ['Comic', 'Fantasy', 'Prismatic'],
     artworks: [
@@ -155,6 +156,7 @@ export const STORIES_SERIES: StorySeries[] = [
     subtitle: 'COMIC PROJECT',
     description: 'A story of the main characters of Honkai: Star Rail in their school life, with a focus on humor and slice-of-life moments.',
     mainImageUrl: `${import.meta.env.BASE_URL}Rosalia_arts/Compressed/Cover-comic-Kyris-1.webp`,
+    externalUrl: 'https://www.instagram.com/p/C8yyIAFS1mF/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
     archivedCount: 1,
     tags: ['Honkai: Star Rail', 'School Life', 'Fan Comic'],
     artworks: [

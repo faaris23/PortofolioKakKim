@@ -16,6 +16,7 @@ export interface StorySeries {
   subtitle: string;
   description: string;
   mainImageUrl: string;
+  externalUrl?: string;
   archivedCount: number;
   tags: string[];
   artworks: {
