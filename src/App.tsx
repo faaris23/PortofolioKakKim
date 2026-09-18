@@ -10,6 +10,8 @@ import { ARTWORKS } from './data';
 import { Artwork } from './types';
 import { ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
+
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('portfolio');
@@ -233,6 +235,8 @@ export default function App() {
 
       {/* Footer copyright & subscription */}
       <Footer setActiveTab={setActiveTab} />
+
+      <Analytics />
     </div>
   );
 }
