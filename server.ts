@@ -66,6 +66,17 @@ const inquiryRateLimiter = rateLimit({
   },
 });
 
+const adminRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    error: 'Too many admin requests',
+    message: 'Please try again later.',
+  },
+});
+
 // Email transporter setup
 let transporter: nodemailerLib.Transporter | null = null;
 
@@ -80,14 +91,21 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
 }
 
 // Middleware
+app.disable('x-powered-by');
+app.use((_req: Request, res: Response, next: express.NextFunction) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  next();
+});
 app.use(cors({
   origin: isProduction
     ? process.env.FRONTEND_URL
     : ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true,
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
 // Data storage file (simple JSON-based storage)
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -298,7 +316,7 @@ app.post('/api/inquiries', inquiryRateLimiter, async (req: Request, res: Respons
  * GET /api/inquiries
  * Retrieve all inquiries (protected route in production)
  */
-app.get('/api/inquiries', requireAdminKey, (req: Request, res: Response) => {
+app.get('/api/inquiries', adminRateLimiter, requireAdminKey, (req: Request, res: Response) => {
   try {
     const inquiries = readInquiries();
     return res.status(200).json({
@@ -319,7 +337,7 @@ app.get('/api/inquiries', requireAdminKey, (req: Request, res: Response) => {
  * GET /api/inquiries/:id
  * Retrieve a specific inquiry
  */
-app.get('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
+app.get('/api/inquiries/:id', adminRateLimiter, requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const inquiries = readInquiries();
@@ -348,7 +366,7 @@ app.get('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => 
  * PATCH /api/inquiries/:id
  * Update inquiry status (for admin)
  */
-app.patch('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
+app.patch('/api/inquiries/:id', adminRateLimiter, requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -392,7 +410,7 @@ app.patch('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) =
  * DELETE /api/inquiries/:id
  * Delete an inquiry
  */
-app.delete('/api/inquiries/:id', requireAdminKey, (req: Request, res: Response) => {
+app.delete('/api/inquiries/:id', adminRateLimiter, requireAdminKey, (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const inquiries = readInquiries();
